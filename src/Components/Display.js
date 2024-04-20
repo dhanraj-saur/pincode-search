@@ -3,11 +3,31 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import searchIcon from '../Image/search.png'
 
 const Display = () => {
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
+
+    const [search, setSearch] = useState('')
+
+    const [filterTerm, setFilteredTerm] = useState([])
+
+
 
 
     // get parametrs from url ex:- display/57676(pinCode)
     const { pinCode } = useParams()
+
+    const handleInputChange = (e) => {
+        const searchTerm = e.target.value;
+
+        setSearch(searchTerm)
+
+        const filteredItems = data.filter((item) =>
+            item.Name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        console.log(filteredItems);
+        setFilteredTerm(filteredItems)
+    }
+
+
     const fetchData = () => {
         const url = `https://api.postalpincode.in/pincode/${pinCode}`;
 
@@ -29,19 +49,16 @@ const Display = () => {
 
 
     return (
-
-
         <div>
-
             <div className='search'>
-                <img src={searchIcon} alt='searchIcon' width={20} height={20}/>
-                <input type='search' placeholder='filter'/>
+                <img src={searchIcon} alt='searchIcon' width={20} height={20} />
+                <input type='search' placeholder='filter' value={search} onChange={handleInputChange} />
             </div>
             <div className='details'>
 
-                {data && data?.map((item, index) => (
-                    <div key={index} >
+                {data?.map((item, index) => (
 
+                    <div key={index} >
                         <div className='data'>
                             <p>Name : {item?.Name}</p>
                             <p>Branch Type : {item?.BranchType}</p>

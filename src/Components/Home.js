@@ -12,10 +12,6 @@ const Home = () => {
         navigate("/display/"+pincode)
     };
 
-
-
-    
-
     return (
         <div className="home">
             <h1>Enter Pincode</h1>
